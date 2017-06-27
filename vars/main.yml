@@ -1,0 +1,5 @@
+---
+# vars file for redis
+redis_packages:
+  - redis
+redis_data_dir: /tmp/data

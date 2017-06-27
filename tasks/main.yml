@@ -1,0 +1,87 @@
+---
+# tasks file for redis
+- name: Create /data
+  file:
+    path: "{{ redis_data_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Create /data/redis_6379 directory
+  file:
+    path: "{{ redis_data_dir }}/redis_6379"
+    state: directory
+    mode: 0755
+
+- name: Create /data/redis_6380 directory
+  file:
+    path: "{{ redis_data_dir }}/redis_6380"
+    state: directory
+    mode: 0755
+
+- name: Install redis packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    "{{ redis_packages }}"
+
+# - name: Create redis log directory
+#   file:
+#     path: /var/log/redis/
+#     state: directory
+#     mode: 0755
+
+# - name: Create redis logrotate file
+#   copy:
+#     src: "etc/logrotate.d/redis"
+#     dest: "/etc/logrotate.d/redis"
+#     mode: 0600
+
+# - name: Create master systemd service definition
+#   copy:
+#     src:  "etc/systemd/system/redis-master.service"
+#     dest: "/etc/systemd/system/redis-master.service"
+#     mode: 0644
+#   notify:
+#     "restart redis_master"
+
+# - name: Create slave systemd service definition
+#   copy:
+#     src:  "etc/systemd/system/redis-slave.service"
+#     dest: "/etc/systemd/system/redis-slave.service"
+#     mode: 0644
+#   notify:
+#     "restart redis_slave"
+
+# - name: Create config file for redis master
+#   copy:
+#     src: "opt/redis/redis_6379.conf"
+#     dest: "/opt/redis/redis_6379.conf"
+#     mode: 0755
+#   notify:
+#     "restart redis_master"
+
+# - name: Start redis master service
+#   systemd:
+#     name: redis-master
+#     state: started
+#     enabled: True
+#     daemon_reload: yes
+
+# - name: Start redis slave service
+#   systemd:
+#     name: redis-slave
+#     state: started
+#     enabled: True
+#     daemon_reload: yes
+
+# - name: Create cluster file
+#   template:
+#     src: "opt/redis_tools/redis_builder/cluster1.xml.j2"
+#     dest: "/opt/redis_tools/redis_builder/cluster1.xml"
+
+# - name: Create redis cluster
+#   command: /opt/redis_tools/redis_builder/redis_builder -s {{ hostvars[groups['redis-nodes'][0]]['ansible_default_ipv4']['address'] }}:6379 -a create -f /opt/redis_tools/redis_builder/cluster1.xml
+#   args:
+#     creates: /data/redis_6379/dump_6379.rdb
+#   when: inventory_hostname == groups['redis-nodes'][0]
