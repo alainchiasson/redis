@@ -1,11 +1,11 @@
 ---
 - hosts: all
-  gather_facts: no
+  gather_facts: 'no'
   tasks:
     - name: Install python for Ansible
       raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
-      become: yes
-      changed_when: False
+      become: 'yes'
+      changed_when: false
 
 - hosts: all
   become: true
@@ -13,6 +13,7 @@
     - name: Install required EPEL access for redis packages on CentOS / RedHat.
       yum:
         name: epel-release
-      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      when: ansible_distribution == 'CentOS' or
+            ansible_distribution == 'Red Hat Enterprise Linux'
   roles:
     - role: redis

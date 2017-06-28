@@ -9,10 +9,10 @@
   tasks:
     - name: Destroy molecule instance(s)
       molecule_vagrant:
-        instance_name: "{{ item.name | molecule_instance_with_scenario_name(molecule_yml.scenario.name) }}"
+        instance_name: "{{ molecule_file | molecule_instance_with_scenario_name(item.name) }}"
         platform_box: "{{ item.box }}"
-        molecule_file: "{{ molecule_file }}"
         state: destroy
+      register: server
       with_items: "{{ molecule_yml.platforms }}"
 
     # Mandatory configuration for Molecule to function.
@@ -23,5 +23,8 @@
 
     - name: Dump instance config
       copy:
-        content: "# Molecule managed\n\n{{ instance_conf | to_yaml }}"
+        # NOTE(retr0h): Workaround for Ansible 2.2.
+        #               https://github.com/ansible/ansible/issues/20885
+        content: "{{ instance_conf | to_json | from_json | molecule_to_yaml | molecule_header }}"
         dest: "{{ molecule_instance_config }}"
+      when: server.changed | bool

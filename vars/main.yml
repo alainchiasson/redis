@@ -2,4 +2,5 @@
 # vars file for redis
 redis_packages:
   - redis
-redis_data_dir: /tmp/data
+redis_data_dir: /data
+redis_log_dir: /var/log/redis

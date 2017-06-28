@@ -8,9 +8,17 @@
   tasks:
     - name: Create molecule instance(s)
       molecule_vagrant:
-        instance_name: "{{ item.name | molecule_instance_with_scenario_name(molecule_yml.scenario.name) }}"
+        instance_name: "{{ molecule_file | molecule_instance_with_scenario_name(item.name) }}"
+        instance_interfaces: "{{ item.interfaces | default(omit) }}"
+
         platform_box: "{{ item.box }}"
-        molecule_file: "{{ molecule_file }}"
+        platform_box_version: "{{ item.box_version | default(omit)}}"
+        platform_box_url: "{{ item.box_url | default(omit) }}"
+
+        provider_memory: "{{ item.memory | default(omit)}}"
+        provider_cpus: "{{ item.cpus | default(omit)}}"
+        provider_raw_config_args: "{{ item.raw_config_args | default(omit)}}"
+
         state: up
       register: server
       with_items: "{{ molecule_yml.platforms }}"
@@ -24,7 +32,7 @@
           'address': "{{ item.HostName }}",
           'user': "{{ item.User }}",
           'port': "{{ item.Port }}",
-          'identity_file': "{{ item.IdentityFile }}",}
+          'identity_file': "{{ item.IdentityFile }}", }
       with_items: "{{ server.results }}"
       register: instance_config_dict
       when: server.changed | bool
@@ -36,6 +44,8 @@
 
     - name: Dump instance config
       copy:
-        content: "# Molecule managed\n\n{{ instance_conf | to_yaml }}"
+        # NOTE(retr0h): Workaround for Ansible 2.2.
+        #               https://github.com/ansible/ansible/issues/20885
+        content: "{{ instance_conf | to_json | from_json | molecule_to_yaml | molecule_header }}"
         dest: "{{ molecule_instance_config }}"
       when: server.changed | bool

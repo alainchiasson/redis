@@ -25,11 +25,11 @@
   with_items:
     "{{ redis_packages }}"
 
-# - name: Create redis log directory
-#   file:
-#     path: /var/log/redis/
-#     state: directory
-#     mode: 0755
+- name: Create redis log directory
+  file:
+    path: "{{ redis_log_dir }}"
+    state: directory
+    mode: 0755
 
 # - name: Create redis logrotate file
 #   copy:

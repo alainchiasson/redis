@@ -15,7 +15,7 @@ def test_hosts_file(host):
 
 
 def test_redis_data_path(host):
-    data_dir = host.file("/tmp/data")
+    data_dir = host.file("/data")
 
     assert data_dir.is_directory
 

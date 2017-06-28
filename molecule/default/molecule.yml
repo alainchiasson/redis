@@ -4,13 +4,20 @@ dependency:
 driver:
   name: vagrant
 lint:
-  name: ansible-lint
+  name: yamllint
+  enabled: false
 platforms:
   - name: redis
     box: centos/7
 provisioner:
   name: ansible
+  playbooks:
+    setup: ../common/create.yml
+    teardown: ../common/destroy.yml
+    converge: playbook.yml
 scenario:
   name: default
 verifier:
   name: testinfra
+  lint:
+    name: flake8
