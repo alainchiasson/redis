@@ -12,18 +12,24 @@
   file:
     path: "{{ redis_data_dir }}"
     state: directory
+    owner: redis
+    group: redis
     mode: 0755
 
 - name: Validate that log directory exists
   file:
     path: "{{ redis_log_dir }}"
     state: directory
+    owner: redis
+    group: redis
     mode: 0755
 
 - name: Validate that log directory exists
   file:
     path: "{{ redis_run_dir }}"
     state: directory
+    owner: redis
+    group: redis
     mode: 0755
 
 - name: Install redis gem
@@ -41,6 +47,8 @@
   file:
     path: "{{ redis_data_dir }}/{{ item }}"
     state: directory
+    owner: redis
+    group: redis
   with_items:
     - 7000
     - 7001
@@ -79,8 +87,11 @@
     - 7006
     - 7007
 
-- name: Run the redis nodes with a cluster config.
-  command: "redis-server /etc/redis_{{ item }}.conf"
+- name: start and enable all redis nodes
+  service:
+    name: redis_{{ item }}
+    state: started
+    enabled: yes
   with_items:
     - 7000
     - 7001
@@ -90,21 +101,6 @@
     - 7005
     - 7006
     - 7007
-
-# - name: start and enable all redis nodes
-#   service:
-#     name: redis_{{ item }}
-#     state: started
-#     enabled: yes
-#   with_items:
-#     - 7000
-#     - 7001
-#     - 7002
-#     - 7003
-#     - 7004
-#     - 7005
-#     - 7006
-#     - 7007
 
 # Test that all nodes are up
 # Cluster them.

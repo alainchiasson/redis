@@ -5,5 +5,5 @@ dir {{ redis_data_dir }}/{{ item }}
 pidfile {{ redis_run_dir }}/node_{{ item }}.pid
 logfile {{ redis_log_dir }}/node_{{ item }}.log
 cluster-node-timeout 5000
-daemonize yes
+daemonize no
 appendonly yes

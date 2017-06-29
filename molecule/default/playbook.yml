@@ -10,6 +10,12 @@
 - hosts: all
   become: true
   pre_tasks:
+    - name: Install python selinux module
+      package:
+        name: libselinux-python
+    - name: Dissable SELinux like in our projects
+      selinux:
+        state: disabled
     - name: Install required EPEL access for redis packages on CentOS / RedHat.
       yum:
         name: epel-release
@@ -17,5 +23,8 @@
     - name: Install ruby
       package:
         name: ruby
+    - name: Install net-tools for testinfra socket testing.
+      package:
+        name: net-tools
   roles:
     - role: redis
