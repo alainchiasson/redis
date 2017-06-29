@@ -6,21 +6,55 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
 
-def test_hosts_file(host):
-    f = host.file('/etc/hosts')
-
-    assert f.exists
-    assert f.user == 'root'
-    assert f.group == 'root'
-
-
 def test_redis_data_path(host):
-    data_dir = host.file("/data")
+    d = host.file("/data")
 
-    assert data_dir.is_directory
+    assert d.is_directory
 
 
 def test_redis_installed(host):
     redis = host.package("redis")
 
     assert redis.is_installed
+
+
+def test_cluster_test_dir(host):
+    f = host.file('/home/vagrant/cluster-test')
+
+    assert f.exists
+
+
+def test_redis_subdirs(host):
+    f = host.file('/home/vagrant/cluster-test/7000')
+
+    assert f.exists
+
+
+def test_redis_subdirs(host):
+    f = host.file('/home/vagrant/cluster-test/7001')
+
+    assert f.exists
+
+
+def test_redis_subdirs(host):
+    f = host.file('/home/vagrant/cluster-test/7002')
+
+    assert f.exists
+
+
+def test_redis_subdirs(host):
+    f = host.file('/home/vagrant/cluster-test/7003')
+
+    assert f.exists
+
+
+def test_redis_subdirs(host):
+    f = host.file('/home/vagrant/cluster-test/7004')
+
+    assert f.exists
+
+
+def test_redis_subdirs(host):
+    f = host.file('/home/vagrant/cluster-test/7005')
+
+    assert f.exists

@@ -13,7 +13,9 @@
     - name: Install required EPEL access for redis packages on CentOS / RedHat.
       yum:
         name: epel-release
-      when: ansible_distribution == 'CentOS' or
-            ansible_distribution == 'Red Hat Enterprise Linux'
+      # Required to initialise the cluster
+    - name: Install ruby
+      package:
+        name: ruby
   roles:
     - role: redis

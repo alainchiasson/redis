@@ -1,2 +1,7 @@
 ---
 # handlers file for redis
+- name: restart redis_master
+  debug: msg="restarting redis master"
+
+- name: restart redis_slave
+  debug: msg="restarting redis slave"

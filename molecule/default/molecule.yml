@@ -9,6 +9,7 @@ lint:
 platforms:
   - name: redis
     box: centos/7
+    memory: 4096
 provisioner:
   name: ansible
   playbooks:
