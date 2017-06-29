@@ -41,7 +41,7 @@ directories and node data will be segregated based on the running port :
 | redis_run_dir | Directory where runtime information will be storred (eg: pid file )| /var/run/redis |
 
 Each node will have either a directory ( eg: /ver/lib/redis/7000/ ) or a file
-( eg: /var/log/redis/redis_7000.log ). No node will have 
+( eg: /var/log/redis/redis_7000.log ). No node will have
 
 Dependencies
 ------------
@@ -190,7 +190,5 @@ cat /usr/lib/systemd/system/redis.service
 # WantedBy=multi-user.target
 ```
 
-Setting up cluster mode
------------------------
-
-1. Setup a few empty redis instances running in cluster mode  (may or may not be on seperate machines). This is not normal instances, the must be configured to run as a cluster.
+Copy notes:
+-----------

@@ -51,31 +51,24 @@
     - 7006
     - 7007
 
-# Cluster validation script
-# - name: create the cluster test directory
-#   file:
-#     path: cluster-test
-#     state: directory
-#     mode: 0755
-#
-# - name: create the 6 subdirecotries
-#   file:
-#     path: "cluster-test/{{ item }}"
-#     state: directory
-#   with_items:
-#     - 7000
-#     - 7001
-#     - 7002
-#     - 7003
-#     - 7004
-#     - 7005
-#     - 7006
-#     - 7007
-
 - name: Create all redis.conf files
   template:
     src: "redis.conf.j2"
     dest: "/etc/redis_{{ item }}.conf"
+  with_items:
+    - 7000
+    - 7001
+    - 7002
+    - 7003
+    - 7004
+    - 7005
+    - 7006
+    - 7007
+
+- name: Create a custom redis service file
+  template:
+    src: "redis.service.j2"
+    dest: "/usr/lib/systemd/system/redis_{{ item }}.service"
   with_items:
     - 7000
     - 7001
@@ -97,6 +90,21 @@
     - 7005
     - 7006
     - 7007
+
+# - name: start and enable all redis nodes
+#   service:
+#     name: redis_{{ item }}
+#     state: started
+#     enabled: yes
+#   with_items:
+#     - 7000
+#     - 7001
+#     - 7002
+#     - 7003
+#     - 7004
+#     - 7005
+#     - 7006
+#     - 7007
 
 # Test that all nodes are up
 # Cluster them.

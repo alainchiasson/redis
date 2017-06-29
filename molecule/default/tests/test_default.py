@@ -52,3 +52,16 @@ def test_redis_subdirs(host, port):
     assert f.is_file
     # The following does not work as expected. Need to find out why
     assert f.contains("port " + port)
+
+@pytest.mark.parametrize("port", ports)
+def test_redis_system_conf(host, port):
+    f = host.file("/usr/lib/systemd/system/redis_" + port + ".service")
+
+    assert f.exists
+    assert f.is_file
+
+@pytest.mark.parametrize("port", ports)
+def test_redis_service_ports(host, port):
+    p = host.socket("tcp://127.0.0.1:"+ port)
+
+    assert p.is_listening
