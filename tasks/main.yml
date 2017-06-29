@@ -45,62 +45,26 @@
 # Prepare the nodes
 - name: create the 6 data subdirectories
   file:
-    path: "{{ redis_data_dir }}/{{ item }}"
+    path: "{{ redis_data_dir }}/{{ redis_port }}"
     state: directory
     owner: redis
     group: redis
-  with_items:
-    - 7000
-    - 7001
-    - 7002
-    - 7003
-    - 7004
-    - 7005
-    - 7006
-    - 7007
 
 - name: Create all redis.conf files
   template:
     src: "redis.conf.j2"
-    dest: "/etc/redis_{{ item }}.conf"
-  with_items:
-    - 7000
-    - 7001
-    - 7002
-    - 7003
-    - 7004
-    - 7005
-    - 7006
-    - 7007
+    dest: "/etc/redis_{{ redis_port }}.conf"
 
 - name: Create a custom redis service file
   template:
     src: "redis.service.j2"
-    dest: "/usr/lib/systemd/system/redis_{{ item }}.service"
-  with_items:
-    - 7000
-    - 7001
-    - 7002
-    - 7003
-    - 7004
-    - 7005
-    - 7006
-    - 7007
+    dest: "/usr/lib/systemd/system/redis_{{ redis_port }}.service"
 
 - name: start and enable all redis nodes
   service:
-    name: redis_{{ item }}
+    name: redis_{{ redis_port }}
     state: started
     enabled: yes
-  with_items:
-    - 7000
-    - 7001
-    - 7002
-    - 7003
-    - 7004
-    - 7005
-    - 7006
-    - 7007
 
 # Test that all nodes are up
 # Cluster them.

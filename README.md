@@ -36,6 +36,7 @@ directories and node data will be segregated based on the running port :
 
 | Variable | Description | Default |
 |----------|-------------|---------|
+| redis_port | The Port the redis instance should listen to. Used in all steps of the deployment | 6379 |
 | redis_data_dir | Directory that will hold the persistent data for redis (eg: Data, cluster state)| /var/lib/redis |
 | redis_log_dir | Directory where log files will be placed | /var/log/redis |
 | redis_run_dir | Directory where runtime information will be storred (eg: pid file )| /var/run/redis |
@@ -53,10 +54,24 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: redis_nodes
-      roles:
-         - { name: redis }
+deploy with default listen port (6379)
 
+```
+- hosts: all
+  become: true
+  roles:
+    - redis
+```
+
+Deploy 3 redis nodes alternate ports (7001, 7002, 7003)
+
+```
+- hosts: all
+  become: true
+  roles:
+    - { name: redis, redis_port: 7000 }
+    - { name: redis, redis_port: 7001 }
+```
 
 License
 -------
