@@ -42,26 +42,25 @@
     dest: /usr/bin/redis-trib
     mode: 0755
 
-
 # Prepare the nodes
-- name: create the 6 data subdirectories
+- name: Create the node data sub-directory
   file:
     path: "{{ redis_data_dir }}/{{ redis_port }}"
     state: directory
     owner: redis
     group: redis
 
-- name: Create all redis.conf files
+- name: Create the cluster node redis.conf
   template:
     src: "redis.conf.j2"
     dest: "/etc/redis_{{ redis_port }}.conf"
 
-- name: Create a custom redis service file
+- name: Create the node redis service file
   template:
     src: "redis.service.j2"
     dest: "/usr/lib/systemd/system/redis_{{ redis_port }}.service"
 
-- name: start and enable all redis nodes
+- name: start and enable the redis node.
   service:
     name: redis_{{ redis_port }}
     state: started
