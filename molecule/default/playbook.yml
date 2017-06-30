@@ -29,9 +29,10 @@
       package:
         name: net-tools
   roles:
-    - { name: redis, redis_port: 7000 }
-    - { name: redis, redis_port: 7001 }
-    - { name: redis, redis_port: 7002 }
+    - redis
+    - { name: redis/node, redis_port: 7000 }
+    - { name: redis/node, redis_port: 7001 }
+    - { name: redis/node, redis_port: 7002 }
 
 
 ## Goal playbook ? Maybe not. Works great if it is only one node.

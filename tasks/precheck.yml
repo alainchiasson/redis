@@ -1,6 +1,0 @@
-# These tasks will flag the pre-requisites to see if anything is missing.
-# These are required for the role otherwise we stop here.
-
-# Things that are hard to verify :
-# is an RPM available.
-#

@@ -25,7 +25,6 @@
     setype: redis_port_t
     state: present
 
-
 - name: start and enable the redis node.
   service:
     name: redis_{{ redis_port }}
