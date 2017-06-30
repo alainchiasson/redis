@@ -50,6 +50,18 @@
     owner: redis
     group: redis
 
+# Add the ports to SELINUX context redis_t (port + cluster port)
+- name: Installe policy support packages
+  package:
+    name: policycoreutils-python
+
+- name: Add port to redis selinux profile
+  seport:
+    ports: "{{ redis_port }},{{ redis_port + 10000 }}"
+    proto: tcp
+    setype: redis_port_t
+    state: present
+
 - name: Create the cluster node redis.conf
   template:
     src: "redis.conf.j2"

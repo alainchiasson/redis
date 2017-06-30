@@ -10,16 +10,18 @@
 - hosts: all
   become: true
   pre_tasks:
-    - name: Install python selinux module
-      package:
-        name: libselinux-python
-    - name: Dissable SELinux like in our projects
-      selinux:
-        state: disabled
+    # - name: Install python selinux module
+    #   package:
+    #     name: libselinux-python
+    # NOTE: This make the playbook idempotent for testing.
+    # - name: Dissable SELinux like in our projects
+    #   selinux:
+    #     state: permissive
+    #     policy: targeted
     - name: Install required EPEL access for redis packages on CentOS / RedHat.
       yum:
         name: epel-release
-      # Required to initialise the cluster
+    # Required to initialise the cluster - redis-trib is a ruby app
     - name: Install ruby
       package:
         name: ruby
@@ -30,8 +32,29 @@
     - { name: redis, redis_port: 7000 }
     - { name: redis, redis_port: 7001 }
     - { name: redis, redis_port: 7002 }
-    - { name: redis, redis_port: 7003 }
-    - { name: redis, redis_port: 7004 }
-    - { name: redis, redis_port: 7005 }
-    - { name: redis, redis_port: 7006 }
-    - { name: redis, redis_port: 7007 }
+
+
+## Goal playbook ? Maybe not. Works great if it is only one node.
+#
+# roles:
+#   - redis-deploy
+#   - redis-mgt
+#   - { name: redis, redis_port: 7000 }
+#   - { name: redis, redis_port: 7001 }
+#   - { name: redis, redis_port: 7002 }
+#   - redis-cluster
+
+## take2:
+#
+# - hosts: redis-nodes
+#   roles:
+#   - { name: redis-cluster, redis_cluster_num_master: 3, redis_cluster_replicas: 1 }
+#
+# Questions is how does this distribute the nodes across the entire clsuter ?
+#
+
+## take3:
+#
+#  Define nodes per server and build the cluster from an array
+#
+#
