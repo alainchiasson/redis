@@ -1,13 +1,13 @@
 ---
 - hosts: all
-  gather_facts: 'no'
+  gather_facts: False
   tasks:
     - name: Install python for Ansible
       raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
-      become: 'yes'
-      changed_when: false
+      become: True
+      changed_when: False
 
-- hosts: all
+- hosts: redis-nodes
   become: true
   pre_tasks:
     - name: Install required EPEL access for redis packages on CentOS / RedHat.
@@ -24,4 +24,21 @@
     - redis
     - { role: redis/node, redis_port: 7000 }
     - { role: redis/node, redis_port: 7001 }
-    - { role: redis/node, redis_port: 7002 }
+
+
+- hosts: redis-mgt
+  become: true
+  pre_tasks:
+    - name: Install required EPEL access for redis packages on CentOS / RedHat.
+      yum:
+        name: epel-release
+    # Required to initialise the cluster - redis-trib is a ruby app
+    - name: Install ruby
+      package:
+        name: ruby
+    - name: Install net-tools for testinfra socket testing.
+      package:
+        name: net-tools
+  tasks:
+    - name: Touch a file
+      command: touch /tmp/redis-mgt

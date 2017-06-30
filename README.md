@@ -87,6 +87,60 @@ An optional section for the role authors to include contact information, or a we
 NOTES:
 ----------
 
+Issue with include_role. I had tried the follwoing :
+
+in playbook :
+
+```
+roles:
+  - { role: redis, redis_ports: [7000, 7001] }
+```
+
+And in role:redis, at the end, I had :
+
+```
+ - name: Create all the nodes.
+   include_role:
+     name: redis/node
+   vars:
+     redis_port: "{{ item }}"
+   with_items:
+     - "{{ redis_ports }}"
+
+```
+
+While it did work, the redis role was executed for every machine, then the loop was also run
+for every machine as well - so machine x machine !!
+
+Looking for a "execute once" - I think in dynamic vs static include.  I tried the
+allow_duplicates: False option and it did not work.
+
+## Goal playbook ? Maybe not. Works great if it is only one node.
+#
+# roles:
+#   - redis-deploy
+#   - redis-mgt
+#   - { name: redis, redis_port: 7000 }
+#   - { name: redis, redis_port: 7001 }
+#   - { name: redis, redis_port: 7002 }
+#   - redis-cluster
+
+## take2:
+#
+# - hosts: redis-nodes
+#   roles:
+#   - { name: redis-cluster, redis_cluster_num_master: 3, redis_cluster_replicas: 1 }
+#
+# Questions is how does this distribute the nodes across the entire clsuter ?
+#
+
+## take3:
+#
+#  Define nodes per server and build the cluster from an array
+#
+#
+
+
 After an initial installation of redis :
 
 ```

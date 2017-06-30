@@ -19,7 +19,8 @@
     dest: "/usr/lib/systemd/system/redis_{{ redis_port }}.service"
 
 # Add the ports to SELINUX context redis_t (port + cluster port)
-- seport:
+- name: Add ports to SELinux cotext redis_t ( port, cluster port )
+  seport:
     ports: "{{ redis_port }},{{ redis_port + 10000 }}"
     proto: tcp
     setype: redis_port_t

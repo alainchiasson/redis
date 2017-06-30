@@ -27,7 +27,7 @@
     group: redis
     mode: 0755
 
-- name: Validate that log directory exists
+- name: Validate that run directory exists
   file:
     path: "{{ redis_run_dir }}"
     state: directory
@@ -37,7 +37,7 @@
 
 # Required for selinux changes
 # Add the ports to SELINUX context redis_t (port + cluster port)
-- name: Installe policy support packages
+- name: Install selinux policy support packages
   package:
     name: policycoreutils-python
 
@@ -52,3 +52,12 @@
     src: redis-trib
     dest: /usr/bin/redis-trib
     mode: 0755
+
+# - name: Create all the nodes.
+#   include_role:
+#     name: redis/node
+#     allow_duplicates: False
+#   vars:
+#     redis_port: "{{ item }}"
+#   with_items:
+#     - "{{ redis_ports }}"
