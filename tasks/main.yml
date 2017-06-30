@@ -43,16 +43,16 @@
 
 # The following tasks are used to install redis cluster management software
 #
-- name: Install redis gem
-  package:
-    name: rubygem-redis
-
-- name: Install redis-trib from localfile.
-  copy:
-    src: redis-trib
-    dest: /usr/bin/redis-trib
-    mode: 0755
-
+# - name: Install redis gem
+#   package:
+#     name: rubygem-redis
+#
+# - name: Install redis-trib from localfile.
+#   copy:
+#     src: redis-trib
+#     dest: /usr/bin/redis-trib
+#     mode: 0755
+#
 # - name: Create all the nodes.
 #   include_role:
 #     name: redis/node

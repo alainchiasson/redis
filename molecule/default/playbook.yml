@@ -25,3 +25,4 @@
     - { role: redis/node, redis_port: 7000 }
     - { role: redis/node, redis_port: 7001 }
     - { role: redis/node, redis_port: 7002 }
+    - redis/cluster

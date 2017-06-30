@@ -39,6 +39,5 @@
     - name: Install net-tools for testinfra socket testing.
       package:
         name: net-tools
-  tasks:
-    - name: Touch a file
-      command: touch /tmp/redis-mgt
+  roles:
+    - redis/cluster

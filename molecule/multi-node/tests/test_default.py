@@ -1,4 +1,4 @@
-iimport os
+import os
 
 import testinfra.utils.ansible_runner
 import pytest
