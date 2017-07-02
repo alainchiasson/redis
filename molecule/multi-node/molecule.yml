@@ -13,16 +13,28 @@ platforms:
   - redis-mgt
   box: centos/7
   memory: 2048
+  interfaces:
+    - auto_config: true
+      network_name: private_network
+      type: dhcp
 - name: redis-2
   groups:
   - redis-nodes
   box: centos/7
   memory: 2048
+  interfaces:
+    - auto_config: true
+      network_name: private_network
+      type: dhcp
 - name: redis-3
   groups:
   - redis-nodes
   box: centos/7
   memory: 2048
+  interfaces:
+    - auto_config: true
+      network_name: private_network
+      type: dhcp
 provisioner:
   name: ansible
   playbooks:

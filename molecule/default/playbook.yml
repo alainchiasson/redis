@@ -25,4 +25,4 @@
     - { role: redis/node, redis_port: 7000 }
     - { role: redis/node, redis_port: 7001 }
     - { role: redis/node, redis_port: 7002 }
-    - redis/cluster
+    - { role: redis/cluster, redis_cluster_replicas: 0, redis_node_list: "{{ groups['all'] | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001,7002] ) }}" }

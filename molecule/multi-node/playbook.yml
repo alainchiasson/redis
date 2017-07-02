@@ -15,16 +15,15 @@
         name: epel-release
     # Required to initialise the cluster - redis-trib is a ruby app
     - name: Install ruby
-      package:
+      yum:
         name: ruby
     - name: Install net-tools for testinfra socket testing.
-      package:
+      yum:
         name: net-tools
   roles:
     - redis
     - { role: redis/node, redis_port: 7000 }
     - { role: redis/node, redis_port: 7001 }
-
 
 - hosts: redis-mgt
   become: true
@@ -34,10 +33,11 @@
         name: epel-release
     # Required to initialise the cluster - redis-trib is a ruby app
     - name: Install ruby
-      package:
+      yum:
         name: ruby
     - name: Install net-tools for testinfra socket testing.
-      package:
+      yum:
         name: net-tools
+
   roles:
-    - redis/cluster
+    - { role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: "{{ groups['redis-nodes'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001] ) | list }}" }

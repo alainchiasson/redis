@@ -10,3 +10,10 @@
     src: redis-trib
     dest: /usr/bin/redis-trib
     mode: 0755
+
+- name: print node list
+  debug:
+    msg: "{{ redis_node_list }}"
+
+- name: Create cluster with all nodes
+  command: "redis-trib create --yes --replicas {{ redis_cluster_replicas }} {{ redis_node_list | join(' ') }}"

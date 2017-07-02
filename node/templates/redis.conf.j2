@@ -7,3 +7,6 @@ logfile {{ redis_log_dir }}/node_{{ redis_port }}.log
 cluster-node-timeout 5000
 daemonize no
 appendonly yes
+
+# MAKE INTERFACE UNSECURE !!
+protected-mode no
