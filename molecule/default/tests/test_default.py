@@ -6,9 +6,7 @@ import pytest
 # define the array of ports - base the configs on.
 
 ports = [
-    ("7000"),
-    ("7001"),
-    ("7002"),
+    ("6379")
 ]
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
