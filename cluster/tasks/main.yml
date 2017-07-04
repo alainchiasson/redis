@@ -18,6 +18,6 @@
 
 # link the cluster together.
 - name: Create cluster with all nodes
-  shell: "redis-trib create --yes --replicas {{ redis_cluster_replicas }} {{ redis_node_list | join(' ') }} && touch /etc/redis-cluster-created"
+  shell: "redis-trib create --yes --replicas {{ redis_cluster_replicas }} {{ redis_node_list | join(' ') }} && touch {{ redis_conf_dir }}/redis-cluster-created"
   args:
-    creates: "/etc/redis-cluster-created"
+    creates: "{{ redis_conf_dir }}/redis-cluster-created"

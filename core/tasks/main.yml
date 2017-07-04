@@ -1,0 +1,43 @@
+---
+# The core package will install evrything required on a server to setup one
+# or multiplle redis nodes.
+#
+# tasks file for redis
+- name: Install redis packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    "{{ redis_packages }}"
+
+# Required for selinux changes
+# Add the ports to SELINUX context redis_t (port + cluster port)
+- name: Install selinux policy support packages
+  package:
+    name: policycoreutils-python
+  when: ansible_os_family == "RedHat"
+
+# Simple check - these are done by the package installation
+- name: Validate data dir exists
+  file:
+    path: "{{ redis_data_dir }}"
+    state: directory
+    owner: redis
+    group: redis
+    mode: 0755
+
+- name: Validate that log directory exists
+  file:
+    path: "{{ redis_log_dir }}"
+    state: directory
+    owner: redis
+    group: redis
+    mode: 0755
+
+- name: Validate that run directory exists
+  file:
+    path: "{{ redis_run_dir }}"
+    state: directory
+    owner: redis
+    group: redis
+    mode: 0755

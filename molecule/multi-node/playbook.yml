@@ -21,7 +21,7 @@
       yum:
         name: net-tools
   roles:
-    - redis
+    - redis/core
     - { role: redis/node, redis_port: 7000 }
     - { role: redis/node, redis_port: 7001 }
 
