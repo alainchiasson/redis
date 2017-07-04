@@ -1,0 +1,3 @@
+---
+redis_cluster_replicas: 0
+redis_node_list: "{{ groups['all'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [ 6379 ] ) }}" 

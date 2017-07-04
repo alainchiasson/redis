@@ -1,23 +1,89 @@
-Role Name
+Redis
 =========
 
-The role is to deploy and manage a redis cluster across multiple machines.
+The role is to deploy a redis cluster across multiple machines.
 
 Requirements
 ------------
 
 Prior to running the roles, the following must be in place :
 
-- Access to a REPO with the redis RPM (In testing we add the EPEL repo)
+- Access to an RPM with the EPEL redis RPM (In testing we add the EPEL repo)
 - A version of Ruby installed (In testing we use the Centos packages)
-- An defined group where the nodes are to e installed. (default is redis_nodes)
 
-Either:
-- Access to a repo with rubygems-redis (In testing we use EPEL repo)
-- GEM installed so we can use the ruby gem embeded in this role. (May remove)
+Optionaly:
+- An Ansible group where the nodes are to be installed.
+- An Ansible group where the management node can be installed
+
+Role Usage
+----------
+
+The role is currently broken into 3 parts:
+ - redis/core : to install the required components for redis
+ - redis/node : which will configure everything for a node, and get it running
+ - redis/cluster : Use to create the cluster from the individual nodes
+
+Example 1: A single host with 3 master-nodes, no replication.
+
+```
+ - hosts: all
+   become: true
+   roles:
+     - redis/core
+     - { role: redis/node, redis_port: 7000 }
+     - { role: redis/node, redis_port: 7001 }
+     - { role: redis/node, redis_port: 7002 }
+     - { role: redis/cluster, redis_cluster_replicas: 0, redis_node_list: "{{ groups['all'] | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001,7002] ) }}" }
+```
+
+Example 2: 3 host cluster, with 3 master nodes with 1 replicas (6 nodes total). Notice that we define a node as management to install the management application.
+
+```
+- hosts: redis-nodes
+  become: true
+  roles:
+    - redis/core
+    - { role: redis/node, redis_port: 7000 }
+    - { role: redis/node, redis_port: 7001 }
+
+- hosts: redis-mgt
+  become: true
+  roles:
+    - { role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: "{{ groups['redis-nodes'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001] ) | list }}" }
+
+```
 
 Role Variables
 --------------
+
+
+## Redis
+
+The following user variable can be redefined for the redis.
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| redis_data_dir | The root of the data directory | /var/lib/redis |
+| redis_log_dir | The root direcotry for redis logs | /var/log/redis |
+| redis_run_dir | The root direcotry for redis runtime information | /var/run/redis |
+| redis_conf_dir | The root directry for redis node configuraitons | /etc/ |
+
+The role currently only supports Centos / rpm based installs.
+
+The role will install the redis package(which creates seom default configs and directories - that we may ignore )
+
+The following variables are also defined, but should not be chagned:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| redis_packages | A list of packages required to install redis | [ redis ] |
+| redis_port |  The default port that redis will listen to. | 6379 |
+
+
+NOTE: redis_port can be overridden in the redis/node deployment.
+## Redis/Node
+
+The redis nodes are dif
 
 ### Cluster variables
 
@@ -261,3 +327,37 @@ cat /usr/lib/systemd/system/redis.service
 
 Copy notes:
 -----------
+No cluster enabled:
+
+127.0.0.1:7000> cluster info
+cluster_state:fail
+cluster_slots_assigned:0
+cluster_slots_ok:0
+cluster_slots_pfail:0
+cluster_slots_fail:0
+cluster_known_nodes:1
+cluster_size:0
+cluster_current_epoch:0
+cluster_my_epoch:0
+cluster_stats_messages_sent:0
+cluster_stats_messages_received:0
+127.0.0.1:7000> exit
+[vagrant@redis-1-multi-node ~]$ exit
+logout
+Shared connection to 127.0.0.1 closed.
+
+After cluster enabled :
+
+[vagrant@redis-1-multi-node ~]$ redis-cli -c -p 7000 cluster info
+cluster_state:ok
+cluster_slots_assigned:16384
+cluster_slots_ok:16384
+cluster_slots_pfail:0
+cluster_slots_fail:0
+cluster_known_nodes:6
+cluster_size:3
+cluster_current_epoch:6
+cluster_my_epoch:3
+cluster_stats_messages_sent:117
+cluster_stats_messages_received:117
+[vagrant@redis-1-multi-node ~]$
