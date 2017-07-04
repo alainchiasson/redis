@@ -10,6 +10,13 @@
   with_items:
     "{{ redis_packages }}"
 
+# Required for selinux changes
+# Add the ports to SELINUX context redis_t (port + cluster port)
+- name: Install selinux policy support packages
+  package:
+    name: policycoreutils-python
+  when: ansible_os_family == "RedHat"
+
 # Simple check - these are done by the package installation
 - name: Validate data dir exists
   file:
@@ -34,30 +41,3 @@
     owner: redis
     group: redis
     mode: 0755
-
-# Required for selinux changes
-# Add the ports to SELINUX context redis_t (port + cluster port)
-- name: Install selinux policy support packages
-  package:
-    name: policycoreutils-python
-
-# The following tasks are used to install redis cluster management software
-#
-# - name: Install redis gem
-#   package:
-#     name: rubygem-redis
-#
-# - name: Install redis-trib from localfile.
-#   copy:
-#     src: redis-trib
-#     dest: /usr/bin/redis-trib
-#     mode: 0755
-#
-# - name: Create all the nodes.
-#   include_role:
-#     name: redis/node
-#     allow_duplicates: False
-#   vars:
-#     redis_port: "{{ item }}"
-#   with_items:
-#     - "{{ redis_ports }}"

@@ -16,7 +16,7 @@
     msg: "{{ redis_node_list }}"
 
 
-# link the cluster together. 
+# link the cluster together.
 - name: Create cluster with all nodes
   shell: "redis-trib create --yes --replicas {{ redis_cluster_replicas }} {{ redis_node_list | join(' ') }} && touch /etc/redis-cluster-created"
   args:
