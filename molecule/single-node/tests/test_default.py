@@ -24,7 +24,7 @@ def test_redis_installed(host):
 
 # Verify the datapath
 def test_redis_data_path(host):
-    d = host.file("/var/lib/redis")
+    d = host.file( "/opt/data/redis")
 
     assert d.is_directory
 
@@ -32,7 +32,7 @@ def test_redis_data_path(host):
 @pytest.mark.parametrize("port", ports)
 def test_redis_data_subdirs(host, port):
 
-    f = host.file("/var/lib/redis/" + port)
+    f = host.file("/opt/data/redis" + port)
 
     assert f.exists
     assert f.is_directory
@@ -42,7 +42,7 @@ def test_redis_data_subdirs(host, port):
 @pytest.mark.parametrize("port", ports)
 def test_redis_conf_files(host, port):
 
-    f = host.file("/etc/redis_" + port + ".conf")
+    f = host.file("/opt/etc/redis_" + port + ".conf")
 
     assert f.exists
     assert f.is_file

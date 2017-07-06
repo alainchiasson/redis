@@ -20,8 +20,9 @@
     - name: Install net-tools for testinfra socket testing.
       package:
         name: net-tools
+
   roles:
-    - redis/core
+    - { role: redis/core, redis_data_dir: "/opt/data/redis", redis_log_dir: "/opt/log/redis", redis_run_dir: "/opt/run/redis", redis_conf_dir: "/opt/etc" }
     - { role: redis/node, redis_port: 7000 }
     - { role: redis/node, redis_port: 7001 }
     - { role: redis/node, redis_port: 7002 }
