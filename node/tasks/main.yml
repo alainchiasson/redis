@@ -11,11 +11,8 @@
 - name: Create the cluster config
   include_role:
     name: redis/config
-
-# - name: Create the cluster node redis.conf
-#   template:
-#     src: "redis.conf.j2"
-#     dest: "{{ redis_conf_dir }}/redis_{{ redis_port }}.conf"
+  notify:
+    - restart redis node
 
 - name: Create the node redis service file
   template:

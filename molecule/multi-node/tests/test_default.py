@@ -62,3 +62,11 @@ def test_redis_service_ports(host, port):
     p = host.socket("tcp://127.0.0.1:" + port)
 
     assert p.is_listening
+
+
+@pytest.mark.parametrize("port", ports)
+def test_redis_service(host, port):
+    p = host.service("redis_" + port)
+
+    assert p.is_running
+    assert p.is_enabled
