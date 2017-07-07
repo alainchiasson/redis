@@ -41,11 +41,3 @@
     owner: redis
     group: redis
     mode: 0755
-
-- name: Validate that conf directory exists
-  file:
-    path: "{{ redis_conf_dir }}"
-    state: directory
-    owner: redis
-    group: redis
-    mode: 0755

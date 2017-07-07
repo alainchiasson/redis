@@ -1,0 +1,51 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+lint:
+  name: yamllint
+  enabled: false
+platforms:
+  - name: redis-1
+    groups:
+    - redis-nodes
+    - redis-mgt
+    box: centos/7
+    memory: 2048
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+  - name: redis-2
+    groups:
+    - redis-nodes
+    box: centos/7
+    memory: 2048
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+  - name: redis-3
+    groups:
+    - redis-nodes
+    box: centos/7
+    memory: 2048
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+provisioner:
+  name: ansible
+  playbooks:
+    setup: ../common/create.yml
+    teardown: ../common/destroy.yml
+    converge: playbook.yml
+scenario:
+  name: stop-service
+verifier:
+  name: testinfra
+  options:
+    v: 1
+  lint:
+    name: flake8

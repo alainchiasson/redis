@@ -12,3 +12,4 @@ redis_port: 6379
 redis_packages:
   - redis
 # defaults file for redis
+redis_state: "present"
