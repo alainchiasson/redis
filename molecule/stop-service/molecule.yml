@@ -45,6 +45,7 @@ scenario:
   name: stop-service
 verifier:
   name: testinfra
+  enabled: false
   options:
     v: 1
   lint:

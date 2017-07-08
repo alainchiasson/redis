@@ -17,17 +17,21 @@
     - name: Install ruby
       package:
         name: ruby
+    - name: place SELinux in permissive mode.
+      selinux:
+        policy: targeted
+        state: permissive
     - name: Install net-tools for testinfra socket testing.
       package:
         name: net-tools
 
   roles:
-    - { role: redis/core, redis_data_dir: "/var/lib/redis", redis_log_dir: "/var/log/redis", redis_run_dir: "/var/run/redis" }
-    - { role: redis/node, redis_port: 7000, redis_data_dir: "/var/lib/redis", redis_log_dir: "/var/log/redis", redis_run_dir: "/var/run/redis" }
-    - { role: redis/node, redis_port: 7001, redis_data_dir: "/var/lib/redis", redis_log_dir: "/var/log/redis", redis_run_dir: "/var/run/redis" }
-    - { role: redis/node, redis_port: 7002, redis_data_dir: "/var/lib/redis", redis_log_dir: "/var/log/redis", redis_run_dir: "/var/run/redis" }
+    - { role: redis/core, redis_data_dir: "/opt/data/redis", redis_log_dir: "/opt/log/redis", redis_run_dir: "/opt/run/redis" }
+    - { role: redis/node, redis_port: 7000, redis_data_dir: "/opt/data/redis", redis_log_dir: "/opt/log/redis", redis_run_dir: "/opt/run/redis" }
+    - { role: redis/node, redis_port: 7001, redis_data_dir: "/opt/data/redis", redis_log_dir: "/opt/log/redis", redis_run_dir: "/opt/run/redis" }
+    - { role: redis/node, redis_port: 7002, redis_data_dir: "/opt/data/redis", redis_log_dir: "/opt/log/redis", redis_run_dir: "/opt/run/redis" }
     - { role: redis/cluster, redis_cluster_replicas: 0, redis_node_list: "{{ groups['all'] | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001,7002] ) }}" }
 
-# NOTE: directory redirect fails - need to fix 
+# NOTE: directory redirect fails - need to fix
 # redis_data_dir: "/opt/data/redis", redis_log_dir: "/opt/log/redis", redis_run_dir: "/opt/run/redis" }
 # redis_data_dir: "/var/lib/redis", redis_log_dir: "/var/log/redis", redis_run_dir: "/var/run/redis" }
