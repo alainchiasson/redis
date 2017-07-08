@@ -70,7 +70,10 @@ The following user variable can be redefined for the redis/core.
 | redis_data_dir | The root of the data directory | /var/lib/redis |
 | redis_log_dir | The root direcotry for redis logs | /var/log/redis |
 | redis_run_dir | The root direcotry for redis runtime information | /var/run/redis |
-| redis_conf_dir | The root directry for redis node configuraitons | /etc/ |
+
+NOTE: The role currently only supports Centos / rpm based installs. The role will install the redis package - which creates some default configs and
+ directories - but will be ignored
+
 
 NOTE: The role currently only supports Centos / rpm based installs. The role will install the redis package - which creates some default configs and
  directories - but will be ignored
@@ -81,6 +84,7 @@ The following variables are also defined, but not usualy  redefined in this role
 |----------|-------------|---------|
 | redis_packages | A list of packages required to install redis | [ redis ] |
 | redis_port |  The default port that redis will listen to. | 6379 |
+| redis_conf_dir | The root directry for redis node configuraitons | /etc/ |
 
 
 NOTE: redis_port can be overridden in the redis/node deployment.

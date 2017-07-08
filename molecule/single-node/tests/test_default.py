@@ -11,6 +11,10 @@ ports = [
     ("7002"),
 ]
 
+redis_data_root = "/opt/data/redis/"
+redis_log_root = "/opt/log/redis/"
+redis_run_root = "/opt/run/redis/"
+
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
@@ -24,7 +28,7 @@ def test_redis_installed(host):
 
 # Verify the datapath
 def test_redis_data_path(host):
-    d = host.file("/var/lib/redis")
+    d = host.file(redis_data_root)
 
     assert d.is_directory
 
@@ -32,7 +36,7 @@ def test_redis_data_path(host):
 @pytest.mark.parametrize("port", ports)
 def test_redis_data_subdirs(host, port):
 
-    f = host.file("/var/lib/redis/" + port)
+    f = host.file(redis_data_root + port)
 
     assert f.exists
     assert f.is_directory
@@ -41,6 +45,7 @@ def test_redis_data_subdirs(host, port):
 # Verify that the configs are correct
 @pytest.mark.parametrize("port", ports)
 def test_redis_conf_files(host, port):
+    # We are testing for this, but the shutdown script hardcodes /etc location.
 
     f = host.file("/etc/redis_" + port + ".conf")
 
@@ -63,3 +68,11 @@ def test_redis_service_ports(host, port):
     p = host.socket("tcp://127.0.0.1:" + port)
 
     assert p.is_listening
+
+
+@pytest.mark.parametrize("port", ports)
+def test_redis_service(host, port):
+    p = host.service("redis_" + port)
+
+    assert p.is_running
+    assert p.is_enabled

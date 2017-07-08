@@ -42,9 +42,10 @@ provisioner:
     teardown: ../common/destroy.yml
     converge: playbook.yml
 scenario:
-  name: default
+  name: stop-service
 verifier:
   name: testinfra
+  enabled: false
   options:
     v: 1
   lint:

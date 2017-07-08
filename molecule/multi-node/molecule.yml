@@ -45,5 +45,7 @@ scenario:
   name: multi-node
 verifier:
   name: testinfra
+  options:
+    v: 1
   lint:
     name: flake8

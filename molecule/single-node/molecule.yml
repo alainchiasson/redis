@@ -20,5 +20,7 @@ scenario:
   name: default
 verifier:
   name: testinfra
+  options:
+    v: 1
   lint:
     name: flake8
