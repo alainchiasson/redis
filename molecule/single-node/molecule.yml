@@ -17,7 +17,7 @@ provisioner:
     teardown: ../common/destroy.yml
     converge: playbook.yml
 scenario:
-  name: default
+  name: single-node
 verifier:
   name: testinfra
   options:
