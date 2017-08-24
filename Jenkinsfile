@@ -3,7 +3,8 @@ pipeline {
   stages {
     stage('Test Redis') {
       steps {
-        sh '''molecule test
+        sh '''pyenv activate python2
+molecule test
 '''
       }
     }
