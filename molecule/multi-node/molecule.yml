@@ -37,10 +37,6 @@ platforms:
       type: dhcp
 provisioner:
   name: ansible
-  playbooks:
-    setup: ../common/create.yml
-    teardown: ../common/destroy.yml
-    converge: playbook.yml
 scenario:
   name: multi-node
 verifier:

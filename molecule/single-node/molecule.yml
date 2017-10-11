@@ -12,10 +12,6 @@ platforms:
     memory: 4096
 provisioner:
   name: ansible
-  playbooks:
-    setup: ../common/create.yml
-    teardown: ../common/destroy.yml
-    converge: playbook.yml
 scenario:
   name: single-node
 verifier:
