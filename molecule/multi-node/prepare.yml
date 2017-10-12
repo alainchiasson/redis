@@ -1,0 +1,20 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: False
+  become: true
+  tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      become: True
+      changed_when: False
+    - name: Install required EPEL access for redis packages on CentOS / RedHat.
+      yum:
+        name: epel-release
+    # Required to initialise the cluster - redis-trib is a ruby app
+    - name: Install ruby
+      package:
+        name: ruby
+    - name: Install net-tools for testinfra socket testing.
+      package:
+        name: net-tools
