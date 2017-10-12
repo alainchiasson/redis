@@ -9,8 +9,8 @@ lint:
 platforms:
 - name: redis-1
   groups:
-  - redis-nodes
-  - redis-mgt
+    - redis_nodes
+    - redis_mgt
   box: centos/7
   memory: 2048
   interfaces:
@@ -19,7 +19,7 @@ platforms:
       type: dhcp
 - name: redis-2
   groups:
-  - redis-nodes
+    - redis_nodes
   box: centos/7
   memory: 2048
   interfaces:
@@ -28,7 +28,7 @@ platforms:
       type: dhcp
 - name: redis-3
   groups:
-  - redis-nodes
+    - redis_nodes
   box: centos/7
   memory: 2048
   interfaces:

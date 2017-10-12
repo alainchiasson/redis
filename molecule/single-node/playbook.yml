@@ -1,29 +1,6 @@
 ---
 - hosts: all
-  gather_facts: 'no'
-  tasks:
-    - name: Install python for Ansible
-      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
-      become: 'yes'
-      changed_when: false
-
-- hosts: all
   become: true
-  pre_tasks:
-    - name: Install required EPEL access for redis packages on CentOS / RedHat.
-      yum:
-        name: epel-release
-    # Required to initialise the cluster - redis-trib is a ruby app
-    - name: Install ruby
-      package:
-        name: ruby
-    - name: place SELinux in permissive mode.
-      selinux:
-        policy: targeted
-        state: permissive
-    - name: Install net-tools for testinfra socket testing.
-      package:
-        name: net-tools
 
   roles:
     - { role: redis/core, redis_packages: "redis-3.2.3", redis_data_dir: "/opt/data/redis", redis_log_dir: "/opt/log/redis", redis_run_dir: "/opt/run/redis" }

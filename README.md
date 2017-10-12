@@ -39,20 +39,20 @@ Example 1: A single host with 3 master-nodes, no replication.
      - { role: redis/cluster, redis_cluster_replicas: 0, redis_node_list: "{{ groups['all'] | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001,7002] ) }}" }
 ```
 
-Example 2: 3 host cluster (defined in redis-nodes), with 3 master nodes with 1 replicas (6 nodes total). Notice that we define a node as management to install the management application.
+Example 2: 3 host cluster (defined in redis_nodes), with 3 master nodes with 1 replicas (6 nodes total). Notice that we define a node as management to install the management application.
 
 ```
-- hosts: redis-nodes
+- hosts: redis_nodes
   become: true
   roles:
     - redis/core
     - { role: redis/node, redis_port: 7000 }
     - { role: redis/node, redis_port: 7001 }
 
-- hosts: redis-mgt
+- hosts: redis_mgt
   become: true
   roles:
-    - { role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: "{{ groups['redis-nodes'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001] ) | list }}" }
+    - { role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: "{{ groups['redis_nodes'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001] ) | list }}" }
 
 ```
 

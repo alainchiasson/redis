@@ -8,6 +8,10 @@
       raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
       become: True
       changed_when: False
+    - name: place SELinux in permissive mode.
+      selinux:
+        policy: targeted
+        state: permissive
     - name: Install required EPEL access for redis packages on CentOS / RedHat.
       yum:
         name: epel-release
