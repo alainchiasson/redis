@@ -39,20 +39,20 @@ Example 1: A single host with 3 master-nodes, no replication.
      - { role: redis/cluster, redis_cluster_replicas: 0, redis_node_list: "{{ groups['all'] | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001,7002] ) }}" }
 ```
 
-Example 2: 3 host cluster (defined in redis_nodes), with 3 master nodes with 1 replicas (6 nodes total). Notice that we define a node as management to install the management application.
+Example 2: 3 host cluster (defined in redis-nodes), with 3 master nodes with 1 replicas (6 nodes total). Notice that we define a node as management to install the management application.
 
 ```
-- hosts: redis_nodes
+- hosts: redis-nodes
   become: true
   roles:
     - redis/core
     - { role: redis/node, redis_port: 7000 }
     - { role: redis/node, redis_port: 7001 }
 
-- hosts: redis_mgt
+- hosts: redis-mgt
   become: true
   roles:
-    - { role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: "{{ groups['redis_nodes'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001] ) | list }}" }
+    - { role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: "{{ groups['redis-nodes'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001] ) | list }}" }
 
 ```
 
@@ -70,10 +70,7 @@ The following user variable can be redefined for the redis/core.
 | redis_data_dir | The root of the data directory | /var/lib/redis |
 | redis_log_dir | The root direcotry for redis logs | /var/log/redis |
 | redis_run_dir | The root direcotry for redis runtime information | /var/run/redis |
-
-NOTE: The role currently only supports Centos / rpm based installs. The role will install the redis package - which creates some default configs and
- directories - but will be ignored
-
+| redis_conf_dir | The root directry for redis node configuraitons | /etc/ |
 
 NOTE: The role currently only supports Centos / rpm based installs. The role will install the redis package - which creates some default configs and
  directories - but will be ignored
@@ -84,7 +81,6 @@ The following variables are also defined, but not usualy  redefined in this role
 |----------|-------------|---------|
 | redis_packages | A list of packages required to install redis | [ redis ] |
 | redis_port |  The default port that redis will listen to. | 6379 |
-| redis_conf_dir | The root directry for redis node configuraitons | /etc/ |
 
 
 NOTE: redis_port can be overridden in the redis/node deployment.

@@ -11,6 +11,8 @@ ExecStart=/usr/bin/redis-server {{ redis_conf_dir }}/redis_{{ redis_port }}.conf
 ExecStop=/usr/bin/redis-shutdown redis_{{ redis_port }}
 User=redis
 Group=redis
+Restart=always
+RestartSec=180
 
 [Install]
 WantedBy=multi-user.target

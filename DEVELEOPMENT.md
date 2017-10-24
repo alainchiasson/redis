@@ -41,18 +41,18 @@ the resulting array will be every combination, namely :
 
 Notes on usage:
 ---------------
-A sane way to use this role, is to label hosts [ redis_nodes ] and create a
-[ redis-ports ] array. The ansible roles should be run on all redis_nodes, and
+A sane way to use this role, is to label hosts [ redis-nodes ] and create a
+[ redis-ports ] array. The ansible roles should be run on all redis-nodes, and
 redis/node should loop over the ports array, redefining the ```redis_ports```
 variable. NOTE: there is currently no way to loop over a role.
 
 ```
-- hosts: redis_nodes
+- hosts: redis-nodes
   role:
   - redis/core
   - { role: redis/node, redis_ports: redis_ports[0] }
   - { role: redis/node, redis_ports: redis_ports[1] }
-  - { role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: {{ group['redis_nodes'] | arraypermute( [:] ) | arraypermute( redis_ports ) | list }}}
+  - { role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: {{ group['redis-nodes'] | arraypermute( [:] ) | arraypermute( redis_ports ) | list }}}
 ```
 
 

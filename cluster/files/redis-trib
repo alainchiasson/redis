@@ -704,6 +704,10 @@ class RedisTrib
         masters = interleaved.slice!(0, masters_count)
         nodes_count -= masters.length
 
+        ## fix/redis_cluster_issue 
+        
+        interleaved.push interleaved.shift        
+        
         masters.each{|m| puts m}
 
         # Alloc slots on masters

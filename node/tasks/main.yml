@@ -8,11 +8,10 @@
     owner: redis
     group: redis
 
-- name: Create the cluster config
-  include_role:
-    name: redis/config
-  notify:
-    - restart redis node
+- name: Create the cluster node redis.conf
+  template:
+    src: "redis.conf.j2"
+    dest: "{{ redis_conf_dir }}/redis_{{ redis_port }}.conf"
 
 - name: Create the node redis service file
   template:
@@ -27,6 +26,7 @@
     setype: redis_port_t
     state: present
   when:
+    - ansible_selinux is not defined
     - ansible_os_family == "RedHat"
     - ansible_selinux.status != "disabled"
 
