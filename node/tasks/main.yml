@@ -18,6 +18,11 @@
     src: "redis.service.j2"
     dest: "/usr/lib/systemd/system/redis_{{ redis_port }}.service"
 
+- name: Debug ansible stuff
+  debug:
+    var: ansible_selinux
+
+
 # Add the ports to SELINUX context redis_t (port + cluster port)
 - name: Add ports to SELinux cotext redis_t ( port, cluster port )
   seport:
@@ -26,7 +31,7 @@
     setype: redis_port_t
     state: present
   when:
-    - ansible_selinux is not defined
+    - ansible_selinux is defined
     - ansible_os_family == "RedHat"
     - ansible_selinux.status != "disabled"
 
