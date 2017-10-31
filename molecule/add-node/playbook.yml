@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - redis/core
+    - { role: redis/node, redis_port: 7000 }
+    - { role: redis/node, redis_port: 7001 }
+
+# NOTE: only redis_nodes will be added to cluster.
+
+- hosts: redis_mgt
+  become: true
+  roles:
+    - { role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: "{{ groups['redis_nodes'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | arraypermute( [':'] ) | arraypermute( [7000,7001] ) | list }}" }

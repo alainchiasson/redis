@@ -1,0 +1,58 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+  enabled: false
+platforms:
+- name: redis-1
+  groups:
+    - redis_nodes
+    - redis_mgt
+  box: centos/7
+  memory: 2048
+  interfaces:
+    - auto_config: true
+      network_name: private_network
+      type: dhcp
+- name: redis-2
+  groups:
+    - redis_nodes
+  box: centos/7
+  memory: 2048
+  interfaces:
+    - auto_config: true
+      network_name: private_network
+      type: dhcp
+- name: redis-3
+  groups:
+    - redis_nodes
+  box: centos/7
+  memory: 2048
+  interfaces:
+    - auto_config: true
+      network_name: private_network
+      type: dhcp
+- name: redis-4
+  groups:
+    - extra_nodes
+  box: centos/7
+  memory: 2048
+  interfaces:
+    - auto_config: true
+      network_name: private_network
+      type: dhcp
+provisioner:
+  name: ansible
+scenario:
+  name: add-node
+verifier:
+  name: testinfra
+  options:
+    v: 1
+  lint:
+    name: flake8
