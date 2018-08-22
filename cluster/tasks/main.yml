@@ -13,11 +13,13 @@
 
 - name: print node list
   debug:
-    msg: "{{ redis_node_list }}"
+    msg: "{{redis_node_list}}"
 
 
 # link the cluster together.
 - name: Create cluster with all nodes
-  shell: "redis-trib create --yes --replicas {{ redis_cluster_replicas }} {{ redis_node_list | join(' ') }} && touch {{ redis_conf_dir }}/redis-cluster-created"
+  shell: "redis-trib create --yes --replicas {{redis_cluster_replicas}} \
+      {{redis_node_list | join(' ')}} \
+      && touch {{redis_conf_dir}}/redis-cluster-created"
   args:
-    creates: "{{ redis_conf_dir }}/redis-cluster-created"
+    creates: "{{redis_conf_dir}}/redis-cluster-created"

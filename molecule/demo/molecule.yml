@@ -2,22 +2,19 @@
 dependency:
   name: galaxy
 driver:
-  name: vagrant
-  provider:
-    name: virtualbox
+  name: docker
 lint:
   name: yamllint
 platforms:
-  - name: redis
-    box: centos/7
-    memory: 4096
+  - name: instance
+    image: centos:7
 provisioner:
   name: ansible
+  lint:
+    name: ansible-lint
 scenario:
-  name: single-node
+  name: demo
 verifier:
   name: testinfra
-  options:
-    v: 1
   lint:
     name: flake8

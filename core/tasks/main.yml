@@ -1,14 +1,15 @@
 ---
+
 # The core package will install evrything required on a server to setup one
 # or multiplle redis nodes.
 #
 # tasks file for redis
 - name: Install redis packages
   package:
-    name: "{{ item }}"
+    name: "{{item}}"
     state: present
   with_items:
-    "{{ redis_packages }}"
+    "{{redis_packages}}"
 
 # Required for selinux changes
 # Add the ports to SELINUX context redis_t (port + cluster port)
@@ -17,27 +18,41 @@
     name: policycoreutils-python
   when: ansible_os_family == "RedHat"
 
-# Simple check - these are done by the package installation
-- name: Validate data dir exists
+- name: Create data dir
   file:
-    path: "{{ redis_data_dir }}"
+    path: "{{redis_data_dir}}"
     state: directory
     owner: redis
     group: redis
     mode: 0755
 
-- name: Validate that log directory exists
+- name: Create conf dir
   file:
-    path: "{{ redis_log_dir }}"
+    path: "{{redis_conf_dir}}"
     state: directory
     owner: redis
     group: redis
     mode: 0755
 
-- name: Validate that run directory exists
+- name: Create logs dir
   file:
-    path: "{{ redis_run_dir }}"
+    path: "{{redis_log_dir}}"
     state: directory
     owner: redis
     group: redis
     mode: 0755
+
+- name: Create run directory
+  file:
+    path: "{{redis_run_dir}}"
+    state: directory
+    owner: redis
+    group: redis
+    mode: 0755
+
+# Workaround the config dir to use is hardcoded in the script
+- name: Fix conf dir in redis-shutdown
+  replace:
+    dest: /usr/libexec/redis-shutdown
+    regexp: '^CONFIG_FILE=.*$'
+    replace: 'CONFIG_FILE="{{redis_conf_dir}}/$SERVICE_NAME.conf"'

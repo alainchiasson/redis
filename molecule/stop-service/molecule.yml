@@ -7,12 +7,11 @@ driver:
     name: virtualbox
 lint:
   name: yamllint
-  enabled: false
 platforms:
   - name: redis-1
     groups:
-    - redis_nodes
-    - redis_mgt
+      - redis_nodes
+      - redis_mgt
     box: centos/7
     memory: 2048
     interfaces:
@@ -21,7 +20,7 @@ platforms:
         type: dhcp
   - name: redis-2
     groups:
-    - redis_nodes
+      - redis_nodes
     box: centos/7
     memory: 2048
     interfaces:
@@ -30,7 +29,7 @@ platforms:
         type: dhcp
   - name: redis-3
     groups:
-    - redis_nodes
+      - redis_nodes
     box: centos/7
     memory: 2048
     interfaces:

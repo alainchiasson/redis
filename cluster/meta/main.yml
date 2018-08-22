@@ -1,18 +1,4 @@
 ---
-galaxy_info:
-  author: your name
-  description: your description
-  company: your company (optional)
-  license: license (GPLv2, CC-BY, etc)
-
-  min_ansible_version: 1.2
-
-  platforms:
-  - name: CentOS
-    versions:
-    - 7
-
-  galaxy_tags: []
 
 dependencies:
-  - { role: 'redis' }
+  - {role: 'redis/defaults'}

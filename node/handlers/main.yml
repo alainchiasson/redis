@@ -2,15 +2,15 @@
 # file: roles/common/handlers/main.yml
 - name: restart redis node
   service:
-    name: redis_{{ node_port }}
+    name: redis_{{node_port}}
     state: restarted
 
 - name: stop redis node
   service:
-    name: redis_{{ node_port }}
+    name: redis_{{node_port}}
     state: stopped
 
 - name: start redis node
   service:
-    name: redis_{{ node_port }}
+    name: redis_{{node_port}}
     state: started
