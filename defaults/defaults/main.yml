@@ -8,5 +8,5 @@ redis_conf_dir: /etc
 
 # Note: default for node deployments.
 redis_port: 6379
-redis_packages: 
+redis_packages:
   - redis

@@ -16,4 +16,4 @@ class FilterModule(object):
     def filters(self):
         return {
             'arraypermute': arraypermute
-        }
+       }

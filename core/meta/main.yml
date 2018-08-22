@@ -1,4 +1,4 @@
 ---
 
 dependencies:
-  - { role: 'redis/defaults' }
+  - {role: 'redis/defaults'}

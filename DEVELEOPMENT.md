@@ -30,7 +30,7 @@ We created a custom jinja2 filter for this : arraypermute(array)
 
 Usage:
 
-{{ array1 | arraypermute( array2 ) | list }}
+{{array1 | arraypermute( array2 ) | list}}
 
 If Array1 = [ a,b,c,d ]
 and Array2 = [ 1,2,3 ]
@@ -50,9 +50,9 @@ variable. NOTE: there is currently no way to loop over a role.
 - hosts: redis-nodes
   role:
   - redis/core
-  - { role: redis/node, redis_ports: redis_ports[0] }
-  - { role: redis/node, redis_ports: redis_ports[1] }
-  - { role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: {{ group['redis-nodes'] | arraypermute( [:] ) | arraypermute( redis_ports ) | list }}}
+  - {role: redis/node, redis_ports: redis_ports[0]}
+  - {role: redis/node, redis_ports: redis_ports[1]}
+  - {role: redis/cluster, redis_cluster_replicas: 1, redis_node_list: {{group['redis-nodes'] | arraypermute( [:] ) | arraypermute( redis_ports ) | list}}}
 ```
 
 

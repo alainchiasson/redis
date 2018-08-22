@@ -3,7 +3,7 @@
 # Prepare the nodes
 - name: Create the node data sub-directory
   file:
-    path: "{{ redis_data_dir }}/{{ redis_port }}"
+    path: "{{redis_data_dir}}/{{redis_port}}"
     state: directory
     owner: redis
     group: redis
@@ -11,12 +11,12 @@
 - name: Create the cluster node redis.conf
   template:
     src: "redis.conf.j2"
-    dest: "{{ redis_conf_dir }}/redis_{{ redis_port }}.conf"
+    dest: "{{redis_conf_dir}}/redis_{{redis_port}}.conf"
 
 - name: Create the node redis service file
   template:
     src: "redis.service.j2"
-    dest: "/usr/lib/systemd/system/redis_{{ redis_port }}.service"
+    dest: "/usr/lib/systemd/system/redis_{{redis_port}}.service"
 
 - name: Debug ansible stuff
   debug:
@@ -26,7 +26,7 @@
 # Add the ports to SELINUX context redis_t (port + cluster port)
 - name: Add ports to SELinux cotext redis_t ( port, cluster port )
   seport:
-    ports: "{{ redis_port | int }},{{ redis_port | int + 10000 }}"
+    ports: "{{redis_port | int}},{{redis_port | int + 10000}}"
     proto: tcp
     setype: redis_port_t
     state: present
@@ -37,9 +37,9 @@
 
 - name: start and enable the redis node.
   service:
-    name: redis_{{ redis_port }}
+    name: redis_{{redis_port}}
     state: started
-    enabled: yes
+    enabled: true
 
 # Test that all nodes are up
 # Cluster them.
