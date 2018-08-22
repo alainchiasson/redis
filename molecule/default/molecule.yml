@@ -7,7 +7,6 @@ driver:
     name: virtualbox
 lint:
   name: yamllint
-  enabled: false
 platforms:
   - name: redis-1
     groups:

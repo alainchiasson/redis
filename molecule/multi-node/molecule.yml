@@ -7,36 +7,35 @@ driver:
     name: virtualbox
 lint:
   name: yamllint
-  enabled: false
 platforms:
-- name: redis-1
-  groups:
-    - redis_nodes
-    - redis_mgt
-  box: centos/7
-  memory: 2048
-  interfaces:
-    - auto_config: true
-      network_name: private_network
-      type: dhcp
-- name: redis-2
-  groups:
-    - redis_nodes
-  box: centos/7
-  memory: 2048
-  interfaces:
-    - auto_config: true
-      network_name: private_network
-      type: dhcp
-- name: redis-3
-  groups:
-    - redis_nodes
-  box: centos/7
-  memory: 2048
-  interfaces:
-    - auto_config: true
-      network_name: private_network
-      type: dhcp
+  - name: redis-1
+    groups:
+      - redis_nodes
+      - redis_mgt
+    box: centos/7
+    memory: 2048
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+  - name: redis-2
+    groups:
+      - redis_nodes
+    box: centos/7
+    memory: 2048
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+  - name: redis-3
+    groups:
+      - redis_nodes
+    box: centos/7
+    memory: 2048
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
 provisioner:
   name: ansible
 scenario:

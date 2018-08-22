@@ -37,7 +37,7 @@
           'address': "{{item.HostName}}",
           'user': "{{item.User}}",
           'port': "{{item.Port}}",
-          'identity_file': "{{item.IdentityFile}}",}
+          'identity_file': "{{item.IdentityFile}}", }
       with_items: "{{server.results}}"
       register: instance_config_dict
       when: server.changed | bool
