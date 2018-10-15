@@ -7,7 +7,7 @@
 - name: Install redis packages
   package:
     name: "{{ item }}"
-    state: latest
+    state: present
   with_items:
     "{{ redis_packages }}"
 
